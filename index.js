@@ -1,13 +1,12 @@
-const { readdir, readFile } = require('fs');
+const { readdir, readFile } = require('fs').promises;
 const { dirname } = require('path');
 
 const d = dirname(require.main.filename);
 
-readdir(d, (err, filenames) => {
-    if (err) { console.log('bad'); process.exit(1) };
+readdir(d)
+.then(filenames => {
     filenames.forEach(filename => {
-        readFile(filename, (err2, text) => {
-            console.log(String(text));
-        })
-    }); 
+        readFile(filename)
+        .then(text => console.log(String(text)))
+    });
 });
